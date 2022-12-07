@@ -1,25 +1,32 @@
-# This is a sample Python script.
-from collections import OrderedDict
+from PIL import Image, ImageDraw, ImageFont
+import time
+import subprocess
 
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-import re
+def pillow():
+    start_time = time.time()
+    image = Image.open('test_sample.jpg')
+    font = ImageFont.truetype("am_bold.ttf", 145)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+    ImageDraw.Draw(image).text((100, 500), "Sample text", fill=(255, 255, 255), font=font)
+    # for i in range(1, 11):
+    image.resize((round(image.size[0] / 2), round(image.size[1] / 2))).rotate(90, expand=True).save(
+        f'imageOutput/test_sample_output_pillow_1.jpg', quality=100)
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
-# Press the green button in the gutter to run the script.
+def image_magick():
+    start_time = time.time()
+    # for i in range(1, 11):
+    tempo = 'Sample text'
+    subprocess.call(
+        f'magick test_sample.jpg -draw "text 100,500 ' + str(
+            tempo) + '" -resize 50% -quality 100 -rotate -90 '
+                     'imageOutput/test_sample_output_magick_1.jpg',
+        shell=True)
+    print("--- %s seconds ---" % (time.time() - start_time))
+
 
 if __name__ == '__main__':
-    regex_integer_in_range = r"^[1-9][0-9]{5,5}$"  # Do not delete 'r'.
-    regex_alternating_repetitive_digit_pair = r"(\d)[\d]\1+"  # Do not delete 'r'.
-    P = input()
-
-    print(re.findall(regex_alternating_repetitive_digit_pair, P))
-
-    print(bool(re.match(regex_integer_in_range, P)) and len(re.findall(regex_alternating_repetitive_digit_pair, P)) < 2)
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # pillow()
+    image_magick()

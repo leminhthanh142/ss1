@@ -9,7 +9,7 @@ def number_analysis_program(numbers):
 
 if __name__ == '__main__':
     numbers = []
-    for i in range(0, 20):
+    for i in range(1, 21):
         num = int(input(f"Enter number {i}: "))
         numbers.append(num)
 
